@@ -3,6 +3,7 @@ import getopt
 import pickle
 from processSentence import * 
 from sentenceFeatures import * 
+import feature
 
 def generateFeatures(filename,label,vocabList,X,y,Xtest,ytest):
     input = open(filename);
@@ -11,13 +12,15 @@ def generateFeatures(filename,label,vocabList,X,y,Xtest,ytest):
     # leave last 100 for test set
     top = len(sentences)-100
     for i in range(top):
-        wi = processSentence(sentences[i],vocabList)
+        #wi = processSentence(sentences[i],vocabList)
+        wi = feature.compute_features(sentences[i])
         X = X+[wi]
         y = y+[label]
     bottom = top
     top = len(sentences)
     for i in range(bottom,top):
-        wi = processSentence(sentences[i],vocabList)
+        #wi = processSentence(sentences[i],vocabList)
+        wi = feature.compute_features(sentences[i])
         Xtest = Xtest + [wi]
         ytest = ytest + [label]
     return X,y,Xtest,ytest

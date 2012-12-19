@@ -1,5 +1,6 @@
 import sys
 import getopt
+import nltk
 import pickle
 from tokeniseContents import *
 from getVocabList import *
@@ -12,6 +13,11 @@ def processFile(filename):
   tokens = tokeniseContents(text)
   output = open(filename+".pk","wb")
   pickle.dump(sentences, output)
+  output.close()
+  tagged = [nltk.pos_tag(nltk.tokenize.word_tokenize(s)) for s in sentences]
+  print filename
+  output = open(filename+".tagged.pk","wb")
+  pickle.dump(tagged, output)
   output.close()
   return tokens
 

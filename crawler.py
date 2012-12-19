@@ -4,6 +4,7 @@ import re
 import nltk
 import pickle
 import urllib2
+from corpus import common
 
 root = 'http://textfiles.com/sex/EROTICA'
 
@@ -34,9 +35,10 @@ def taggedSents(pages):
     print "tokenizing sentences"
     random.shuffle(sents)
     sents = [s for s in sents if re.match(r'^[a-zA-Z\'-]+ [a-zA-Z ,\'-]+[.?!]$', s)]
-    chunked = [nltk.tokenize.word_tokenize(s) for s in sents[:60000]]
+    chunked = [nltk.tokenize.word_tokenize(s) for s in sents]
+    sn_in = [s for s in chunked if common.SN.intersection(set(s))]
     print "tagging words"
-    tagged = [nltk.pos_tag(s) for s in chunked]
+    tagged = [nltk.pos_tag(s) for s in sn_in[:60000]]
     return tagged
 
 def main():
@@ -45,7 +47,7 @@ def main():
     crawl(root, pages)
     print "cleaning"
     tagged = taggedSents([clean(d) for d in pages[1:]])
-    f = open('data/estagged.pk', 'wb')
+    f = open('data/estagged2.pk', 'wb')
     pickle.dump(tagged, f)
     f.close()
 
