@@ -85,10 +85,6 @@ def compute_features(s):
 #        subj = ""
 #    feats.append(subj)
 
-    print s
-    print feats
-    print dict((n, f) for n, f in enumerate(feats))
-
     return dict((n, f) for n, f in enumerate(feats))
 
 

@@ -4,7 +4,7 @@ from processSentence import *
 from svmutil import *
 import pickle
 import random
-import feature
+import deviantFeature
 
 def twss(sentence,vocabList,model):
     #print "you said: '"+sentence+"'\n"
@@ -36,7 +36,7 @@ def test(filename, label, model):
     hits = 0.0
     misses = 0.0
     for n in range(len(sentences) - 100, len(sentences)):
-        x = feature.compute_features(sentences[n])
+        x = deviantFeature.compute_features(sentences[n])
         p_label, p_acc, p_val = svm_predict([1], [x], model, '-b 1 -q')
         if p_label[0] == label:
 #            input("That's what she said!")
@@ -63,12 +63,12 @@ def main(argv=None):
         if not args:
             raise Usage('python twss.py "<your sentence>"')
         print "testing on training data"
-#        hit1, miss1 = test('fml.txt.pk', -1, model)
-#        hit2, miss2 = test('tfln.onesent.txt.pk', -1, model)
-#        hit3, miss3 = test('twssstories.txt.pk', 1, model)
-#        hit4, miss4 = test('usaquotes.txt.pk', -1, model)
-#        print "precision: %f" %(hit3 / (miss1 + miss2 + hit3 + miss4))
-#        print "recall: %f" %(hit3 / (hit3 + miss3))
+        hit1, miss1 = test('fml.txt.pk', -1, model)
+        hit2, miss2 = test('tfln.onesent.txt.pk', -1, model)
+        hit3, miss3 = test('twssstories.txt.pk', 1, model)
+        hit4, miss4 = test('usaquotes.txt.pk', -1, model)
+        print "precision: %f" %(hit3 / (miss1 + miss2 + hit3 + miss4))
+        print "recall: %f" %(hit3 / (hit3 + miss3))
         print twss(args[0],vocabList,model)
         
     except Usage, err:
